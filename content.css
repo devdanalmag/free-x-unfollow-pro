@@ -1,0 +1,560 @@
+/* ========================================================
+   X Unfollow Pro – Content Script Styles
+   Injected into x.com / twitter.com
+   ======================================================== */
+
+/* Floating open button */
+#xup-floating-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #ff7a00, #ff9a40);
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 122, 0, 0.4), 0 2px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.2px;
+}
+
+#xup-floating-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 30px rgba(255, 122, 0, 0.5), 0 4px 12px rgba(0,0,0,0.3);
+}
+
+#xup-floating-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+#xup-floating-btn .xup-btn-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* ===== Side Panel ===== */
+#xup-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+#xup-panel-overlay.xup-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#xup-panel {
+  position: fixed;
+  top: 0;
+  right: -460px;
+  width: 440px;
+  height: 100vh;
+  z-index: 9999999;
+  background: #0f0f23;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.5);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#xup-panel.xup-open {
+  right: 0;
+}
+
+/* Panel header */
+.xup-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, #1a1a3e, #0f0f23);
+  border-bottom: 1px solid rgba(255, 122, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.xup-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.xup-panel-title h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.xup-panel-title .xup-logo-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.xup-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #8892a4;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.xup-close-btn:hover {
+  background: rgba(255, 122, 0, 0.15);
+  color: #ff7a00;
+  border-color: rgba(255, 122, 0, 0.3);
+}
+
+/* Status bar */
+.xup-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(255, 122, 0, 0.06);
+  border-bottom: 1px solid rgba(255, 122, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.xup-plan-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.xup-plan-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4caf50;
+}
+
+.xup-plan-label {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.xup-unfollow-counter {
+  font-size: 12px;
+  color: #ff7a00;
+  font-weight: 600;
+}
+
+/* Search & Filters */
+.xup-controls {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.xup-search-box {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.xup-search-box input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.xup-search-box input::placeholder {
+  color: #8892a4;
+}
+
+.xup-search-box input:focus {
+  border-color: rgba(255, 122, 0, 0.5);
+}
+
+.xup-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8892a4;
+  width: 16px;
+  height: 16px;
+}
+
+.xup-filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.xup-filter-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #8892a4;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.xup-filter-btn:hover {
+  border-color: rgba(255, 122, 0, 0.3);
+  color: #ff7a00;
+  background: rgba(255, 122, 0, 0.08);
+}
+
+.xup-filter-btn.xup-active {
+  border-color: #ff7a00;
+  color: #ff7a00;
+  background: rgba(255, 122, 0, 0.12);
+}
+
+.xup-filter-btn .xup-pro-badge {
+  padding: 1px 5px;
+  background: rgba(255, 122, 0, 0.2);
+  color: #ff7a00;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Bulk action bar */
+.xup-bulk-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(255, 122, 0, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.xup-bulk-info {
+  font-size: 12px;
+  color: #8892a4;
+}
+
+.xup-bulk-info strong {
+  color: #fff;
+}
+
+.xup-bulk-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #e53935, #ff5252);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.xup-bulk-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.4);
+}
+
+.xup-bulk-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Account list */
+.xup-account-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.xup-account-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.xup-account-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.xup-account-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.xup-account-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  transition: background 0.15s;
+}
+
+.xup-account-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.xup-account-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.xup-account-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.xup-account-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xup-account-handle {
+  font-size: 12px;
+  color: #8892a4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xup-account-bio {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xup-account-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.xup-whitelist-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #8892a4;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.xup-whitelist-btn:hover {
+  border-color: rgba(76, 175, 80, 0.4);
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.xup-whitelist-btn.xup-whitelisted {
+  border-color: #4caf50;
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.xup-unfollow-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(229, 57, 53, 0.3);
+  background: rgba(229, 57, 53, 0.1);
+  color: #ff5252;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.xup-unfollow-btn:hover {
+  background: rgba(229, 57, 53, 0.2);
+  border-color: rgba(229, 57, 53, 0.5);
+  transform: translateY(-1px);
+}
+
+.xup-unfollow-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.xup-unfollow-btn.xup-unfollowed {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #8892a4;
+  cursor: default;
+}
+
+/* Loading state */
+.xup-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+
+.xup-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 122, 0, 0.15);
+  border-top-color: #ff7a00;
+  border-radius: 50%;
+  animation: xup-spin 0.8s linear infinite;
+}
+
+@keyframes xup-spin {
+  to { transform: rotate(360deg); }
+}
+
+.xup-loading-text {
+  font-size: 13px;
+  color: #8892a4;
+}
+
+/* Empty state */
+.xup-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 12px;
+}
+
+.xup-empty-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.xup-empty-text {
+  font-size: 14px;
+  color: #8892a4;
+  text-align: center;
+}
+
+.xup-navigate-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #ff7a00, #ff9a40);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.xup-navigate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.4);
+}
+
+/* Upgrade prompt */
+.xup-upgrade-prompt {
+  padding: 16px 20px;
+  margin: 0 20px 12px;
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.1), rgba(255, 154, 64, 0.05));
+  border: 1px solid rgba(255, 122, 0, 0.2);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.xup-upgrade-prompt h4 {
+  font-size: 14px;
+  color: #ff7a00;
+  margin: 0 0 6px 0;
+}
+
+.xup-upgrade-prompt p {
+  font-size: 12px;
+  color: #8892a4;
+  margin: 0 0 12px 0;
+}
+
+.xup-upgrade-link {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 8px;
+  background: var(--orange, #ff7a00);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.xup-upgrade-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+}
+
+/* Footer */
+.xup-panel-footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.xup-panel-footer a {
+  font-size: 11px;
+  color: #8892a4;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.xup-panel-footer a:hover {
+  color: #ff7a00;
+}

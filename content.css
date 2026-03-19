@@ -242,16 +242,6 @@
   background: rgba(255, 122, 0, 0.12);
 }
 
-.xup-filter-btn .xup-pro-badge {
-  padding: 1px 5px;
-  background: rgba(255, 122, 0, 0.2);
-  color: #ff7a00;
-  border-radius: 4px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
 /* Bulk action bar */
 .xup-bulk-bar {
   display: flex;
@@ -499,45 +489,6 @@
 .xup-navigate-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(255, 122, 0, 0.4);
-}
-
-/* Upgrade prompt */
-.xup-upgrade-prompt {
-  padding: 16px 20px;
-  margin: 0 20px 12px;
-  background: linear-gradient(135deg, rgba(255, 122, 0, 0.1), rgba(255, 154, 64, 0.05));
-  border: 1px solid rgba(255, 122, 0, 0.2);
-  border-radius: 12px;
-  text-align: center;
-}
-
-.xup-upgrade-prompt h4 {
-  font-size: 14px;
-  color: #ff7a00;
-  margin: 0 0 6px 0;
-}
-
-.xup-upgrade-prompt p {
-  font-size: 12px;
-  color: #8892a4;
-  margin: 0 0 12px 0;
-}
-
-.xup-upgrade-link {
-  display: inline-block;
-  padding: 8px 20px;
-  border-radius: 8px;
-  background: var(--orange, #ff7a00);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.xup-upgrade-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
 }
 
 /* Footer */

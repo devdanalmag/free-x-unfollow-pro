@@ -268,8 +268,8 @@
             // Check if this span is inside a link to the user's profile
             const parentLink = span.closest('a[role="link"]');
             if (parentLink) {
-              const parentHref = parentLink.getAttribute('href') || '';
-              if (parentHref === `/${username}`) {
+              const parentHref = (parentLink.getAttribute('href') || '').toLowerCase();
+              if (parentHref === `/${username.toLowerCase()}`) {
                 name = text;
                 break;
               }
@@ -278,7 +278,7 @@
         }
 
         // Extract avatar
-        const avatarEl = cell.querySelector('img[src*="profile_images"], img[src*="pbs.twimg.com"]');
+        const avatarEl = cell.querySelector('img[src*="twimg.com"]');
         const avatar = avatarEl ? avatarEl.src : '';
         const hasDefaultAvatar = !avatar || avatar.includes('default_profile');
 
@@ -287,15 +287,16 @@
         const textDivs = cell.querySelectorAll('[dir="auto"]');
         for (const div of textDivs) {
           const text = div.textContent.trim();
-          if (text &&
-              text !== name &&
-              text !== `@${username}` &&
-              text !== 'Follows you' &&
-              !text.startsWith('Follows you') &&
-              text.length > 15) {
-            bio = text;
-            break;
-          }
+          if (!text) continue;
+          if (text === name) continue;
+          if (text.toLowerCase() === `@${username.toLowerCase()}`) continue;
+          if (text === 'Follows you') continue;
+          if (['Follow', 'Following', 'Unfollow'].includes(text)) continue;
+          if (text.toLowerCase().includes('followed by ')) continue;
+          if (text.toLowerCase().startsWith('follows ')) continue;
+          
+          bio = text;
+          break;
         }
 
         // Check if "Follows you" badge is present
@@ -346,6 +347,18 @@
             <button class="xup-navigate-btn" onclick="window.location.href='/following'">Go to Following Page →</button>
           </div>
         `;
+      } else if (state.filterInactive && state.accounts.some(a => !a.deepScanned)) {
+        listEl.innerHTML = `
+          <div class="xup-empty">
+            <div class="xup-empty-icon">🔍</div>
+            <div class="xup-empty-text" style="color: #ffb74d;">You need to run a "Deep Scan" first to find Inactive accounts.</div>
+            <button class="xup-navigate-btn" id="xup-trigger-scan" style="margin-top: 10px;">Run Deep Scan Now</button>
+          </div>
+        `;
+        setTimeout(() => {
+          const btn = document.getElementById('xup-trigger-scan');
+          if (btn) btn.addEventListener('click', deepScanAccounts);
+        }, 0);
       } else {
         listEl.innerHTML = `
           <div class="xup-empty">
@@ -497,7 +510,8 @@
 
       // Inactive filter: only show accounts inactive 30+ days
       if (state.filterInactive) {
-        if (!account.lastTweetDate) return true; // keep unscanned accounts visible
+        if (!account.deepScanned) return false; // If not deep scanned, hide them and prompt user
+        if (!account.lastTweetDate) return true; // Keep accounts with 0 tweets as inactive
         const daysSince = (Date.now() - new Date(account.lastTweetDate).getTime()) / (1000 * 60 * 60 * 24);
         if (daysSince < 30) return false;
       }
